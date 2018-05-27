@@ -12,12 +12,28 @@
 
 const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
+var openCards = [] // creates an array to store selected cards
 
+// function to open cards and push it to an array
 function cardSelection (e) {
-    console.log(e.target);
     let card = e.target;
+    openCards.push(card);    
     card.classList.add("open", "show");
+    openOnlyTwoCards();
 };
+
+// function to open only 2 cards at the time
+function openOnlyTwoCards () {
+    if (openCards.length == 2) {
+        setTimeout(function(){
+            for(let card of openCards)
+            {
+                card.classList.remove("open", "show");
+                openCards = [];
+            }
+        },1000);
+    }
+}
 
 
 deck.addEventListener("click",cardSelection); 
