@@ -11,19 +11,16 @@
  */
 
 const allCards = document.querySelectorAll(".card");
+const deck = document.querySelector(".deck");
 
-
-function cardSelection () {
-for (let card of allCards) {
-    card.addEventListener("click", function (evt) 
-{
+function cardSelection (e) {
+    console.log(e.target);
+    let card = e.target;
     card.classList.add("open", "show");
-});
-}
-}
-cardSelection();
+};
 
 
+deck.addEventListener("click",cardSelection); 
 
 
 
