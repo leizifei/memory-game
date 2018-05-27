@@ -10,6 +10,30 @@
  *   - add each card's HTML to the page
  */
 
+const allCards = document.querySelectorAll(".card");
+
+
+function cardSelection () {
+for (let card of allCards) {
+    card.addEventListener("click", function (evt) 
+{
+    card.classList.add("open", "show");
+});
+}
+}
+cardSelection();
+
+
+
+
+
+
+
+
+
+
+
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
