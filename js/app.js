@@ -10,36 +10,48 @@
  *   - add each card's HTML to the page
  */
 
-const allCards = document.querySelectorAll(".card");
+const allCards = document.querySelectorAll(".card"); // selects all classes and store in a nodelist
 const deck = document.querySelector(".deck");
 var openCards = [] // creates an array to store selected cards
 
 // function to open cards and push it to an array
 function cardSelection (e) {
+    // selects the current clicked card and stores in a variable
     let card = e.target;
-    openCards.push(card);    
+
+    // add classes open and show to selected cards
     card.classList.add("open", "show");
+
+    // pushes the selected card into openCards Array
+    openCards.push(card);    
     openOnlyTwoCards();
+
 };
 
 // function to open only 2 cards at the time
 function openOnlyTwoCards () {
-    if (openCards.length == 2) {
+    if (openCards.length === 2) {
+        // remove event listener if 2 cards are selected
+        deck.removeEventListener("click",cardSelection);
+        //open cards to close in 1 second after they are open
         setTimeout(function(){
             for(let card of openCards)
             {
                 card.classList.remove("open", "show");
-                openCards = [];
+                openCards = []; // empty the array
+                //reatach event listener
+                addAgainEventListener();
             }
         },1000);
-    }
+    }     
 }
+// event listener
+deck.addEventListener("click",cardSelection);
 
-
-deck.addEventListener("click",cardSelection); 
-
-
-
+function addAgainEventListener()
+{
+    deck.addEventListener("click",cardSelection);
+};
 
 
 
