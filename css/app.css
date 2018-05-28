@@ -38,6 +38,7 @@ h1 {
  */
 
 .deck {
+    pointer-events: none; /* disable the click event on the parent element */
     width: 660px;
     min-height: 680px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
@@ -52,6 +53,7 @@ h1 {
 }
 
 .deck .card {
+    pointer-events: auto; /* add the click event back to child elements */
     height: 125px;
     width: 125px;
     background: #2e3d49;
@@ -80,7 +82,9 @@ h1 {
     background: #02ccba;
     font-size: 33px;
 }
-
+i {
+    pointer-events: none; /* disable click event in the icon element */
+}
 /*
  * Styles for the Score Panel
  */
