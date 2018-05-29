@@ -13,7 +13,7 @@ const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
 const moves = document.querySelector(".moves");
-
+const matchCardsArray = []; // an array to store matched cards
 var openCards = []; // creates an array to store selected cards
 // event listeners
 deck.addEventListener("click", cardSelection);
@@ -74,22 +74,21 @@ function openOnlyTwoCards() {
 function matchCards() {
     //open cards to close in 1 second after they dont match
     setTimeout(function () {
-        if (openCards[0].innerHTML === openCards[1].innerHTML) {
-            openCards[0].classList.add("match");
-            openCards[1].classList.add("match");
-            addAgainEventListener();
-        } else {
-            openCards[0].classList.remove("open", "show");
-            openCards[1].classList.remove("open", "show");
+
+       if (openCards[0].innerHTML !== openCards[1].innerHTML) {
+         for (let card of openCards) {
+          card.classList.remove("open", "show");
+          openCards = []; // empty the array if cards dont match
+          addAgainEventListener(); // function reatach event listener
+        }
+       } else {
+        for (let card of openCards) {
+            card.classList.add("match");
+            matchCardsArray.push(card);
             openCards = []; // empty the array if cards dont match
             addAgainEventListener(); // function reatach event listener
-        }
-        // for (let card of openCards) {
-        //     console.log(card[0]);
-        //   card.classList.remove("open", "show");
-        //   openCards = []; // empty the array if cards dont match
-        //   addAgainEventListener(); // function reatach event listener
-        // }
+       }
+    }
     }, 1000);
 }
 
