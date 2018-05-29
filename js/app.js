@@ -13,11 +13,13 @@ const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
 const moves = document.querySelector(".moves");
-const matchCardsArray = []; // an array to store matched cards
+const theTimer = document.querySelector(".timer")
+var matchCardsArray = []; // an array to store matched cards
 var openCards = []; // creates an array to store selected cards
-// event listeners
-deck.addEventListener("click", cardSelection);
-restart.addEventListener("click", RestartAndShuffleCards);
+var timer = [0,0,0,0]; // array for the timer
+
+
+
 
 //invoke shuffle cards function when page refreshes
 shuffleCards();
@@ -40,7 +42,25 @@ function RestartAndShuffleCards() {
         card.classList.remove("open", "show", "match");
         openCards = [];
     }
+    for (let card of matchCardsArray) {
+        card.classList.remove("open", "show", "match");
+        matchCardsArray = [];
+    }
     moves.textContent = 0;
+}
+
+// Start the timer:
+function startTimer() {
+   setInterval(runTimer,10);
+}
+// function to display timer running
+function runTimer() {
+let currentTime = timer[0] + ":" + timer[1] + ":" + timer[2];
+theTimer.innerHTML = currentTime;
+timer[3]++;
+timer[0] = Math.floor((timer[3]/100)/60);
+timer[1] = Math.floor((timer[3]/100) - (timer[0] * 60));
+timer[2] = Math.floor(timer[3] - (timer[1] * 100) - (timer[0] * 6000));
 }
 
 // function to open cards and push it to an array
@@ -115,6 +135,12 @@ function shuffle(array) {
 
     return array;
 }
+
+
+// event listeners
+deck.addEventListener("click", cardSelection);
+deck.addEventListener("click", startTimer);
+restart.addEventListener("click", RestartAndShuffleCards);
 
 /*
  * set up the event listener for a card. If a card is clicked:

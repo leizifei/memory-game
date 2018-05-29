@@ -82,6 +82,12 @@ h1 {
     background: #02ccba;
     font-size: 33px;
 }
+.timer {
+    margin-left: 5px;
+}
+.timeLabel {
+    margin-left: 15px;
+}
 i {
     pointer-events: none; /* disable click event in the icon element */
 }
