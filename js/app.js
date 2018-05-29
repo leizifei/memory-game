@@ -8,14 +8,43 @@
  *   - add each card's HTML to the page
  */
 
-const allCards = document.querySelectorAll(".card"); // selects all classes and store in a nodelist
+// elements from the DOM
+const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
-const icons = document.querySelectorAll(".fa")
+const restart = document.querySelector(".restart");
+const moves = document.querySelector(".moves");
 
-var openCards = [] // creates an array to store selected cards
+var openCards = []; // creates an array to store selected cards
+// event listeners
+deck.addEventListener("click", cardSelection);
+restart.addEventListener("click", RestartAndShuffleCards);
+
+//invoke shuffle cards function when page refreshes
+shuffleCards();
+
+// *********** FUNCTIONS ****************** //
+
+// function to shuffle elements
+function shuffleCards() {
+    for (var i = deck.children.length; i >= 0; i--) {
+        deck.appendChild(deck.children[(Math.random() * i) | 0]);
+    }
+}
+
+// function to reset the game
+function RestartAndShuffleCards() {
+    for (var i = deck.children.length; i >= 0; i--) {
+        deck.appendChild(deck.children[(Math.random() * i) | 0]);
+    }
+    for (let card of openCards) {
+        card.classList.remove("open", "show", "match");
+        openCards = [];
+    }
+    moves.textContent = 0;
+}
 
 // function to open cards and push it to an array
-function cardSelection (e) {
+function cardSelection(e) {
     // selects the current clicked card and stores in a variable
     let card = e.target;
 
@@ -23,53 +52,59 @@ function cardSelection (e) {
         !card.classList.contains("open") &&
         !card.classList.contains("show") &&
         !card.classList.contains("match")
-      ) {
-     // pushes the selected card into openCards Array
-    openCards.push(card);   
-    // add classes open and show to selected cards
-    card.classList.add("open", "show");
-      }
-      openOnlyTwoCards();
-};
+    ) {
+        // pushes the selected card into openCards Array
+        openCards.push(card);
+        // add classes open and show to selected cards
+        card.classList.add("open", "show");
+        openOnlyTwoCards();
+    }
+}
 
 // function to open only 2 cards at the time
-function openOnlyTwoCards () {
-    
+function openOnlyTwoCards() {
     if (openCards.length === 2) {
-        // remove event listener if 2 cards are selected
-        deck.removeEventListener("click",cardSelection);
-        //open cards to close in 1 second after they are open
-        setTimeout(function(){
-            for(let card of openCards)
-            {           
-                card.classList.remove("open", "show");
-                openCards = []; // empty the array
-                //reatach event listener
-                addAgainEventListener();
-            }
-        },1000);
-      
-      }
-
-      
+        // remove click listener if 2 cards are selected
+        deck.removeEventListener("click", cardSelection);
+        matchCards();
+    }
 }
-// event listener
-deck.addEventListener("click",cardSelection);
 
-function addAgainEventListener()
-{
-    deck.addEventListener("click",cardSelection);
-};
+// function to check if cards match
+function matchCards() {
+    //open cards to close in 1 second after they dont match
+    setTimeout(function () {
+        if (openCards[0].innerHTML === openCards[1].innerHTML) {
+            openCards[0].classList.add("match");
+            openCards[1].classList.add("match");
+            addAgainEventListener();
+        } else {
+            openCards[0].classList.remove("open", "show");
+            openCards[1].classList.remove("open", "show");
+            openCards = []; // empty the array if cards dont match
+            addAgainEventListener(); // function reatach event listener
+        }
+        // for (let card of openCards) {
+        //     console.log(card[0]);
+        //   card.classList.remove("open", "show");
+        //   openCards = []; // empty the array if cards dont match
+        //   addAgainEventListener(); // function reatach event listener
+        // }
+    }, 1000);
+}
 
-
-
-
+// function re-attach event listener
+function addAgainEventListener() {
+    deck.addEventListener("click", cardSelection);
+}
 
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length,
+        temporaryValue,
+        randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
@@ -81,7 +116,6 @@ function shuffle(array) {
 
     return array;
 }
-
 
 /*
  * set up the event listener for a card. If a card is clicked:
