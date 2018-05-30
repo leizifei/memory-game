@@ -12,8 +12,11 @@
 const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
-const moves = document.querySelector(".moves");
+const movesElement = document.querySelector(".moves");
 const theTimer = document.querySelector(".timer")
+var moves = 0;
+var interval;
+var timerRunning = false;
 var matchCardsArray = []; // an array to store matched cards
 var openCards = []; // creates an array to store selected cards
 var timer = [0,0,0,0]; // array for the timer
@@ -24,6 +27,11 @@ shuffleCards();
 
 // *********** FUNCTIONS ****************** //
 
+function movesCounter () {
+    moves++;
+    movesElement.innerHTML = moves;
+}
+
 // function to shuffle elements
 function shuffleCards() {
     for (var i = deck.children.length; i >= 0; i--) {
@@ -33,9 +41,6 @@ function shuffleCards() {
 
 // function to reset the game
 function RestartAndShuffleCards() {
-    for (var i = deck.children.length; i >= 0; i--) {
-        deck.appendChild(deck.children[(Math.random() * i) | 0]);
-    }
     for (let card of openCards) {
         card.classList.remove("open", "show", "match");
         openCards = [];
@@ -44,14 +49,27 @@ function RestartAndShuffleCards() {
         card.classList.remove("open", "show", "match");
         matchCardsArray = [];
     }
-    moves.textContent = 0;
+    clearInterval(interval); // stop timer with clearInterval method passing the interval variable which stores setInterval function
+    interval = null; // clear the interval to reasign it
+    timer = [0,0,0,0]; // resets timer array to 0
+    timerRunning = false; // stops the timer
+    theTimer.textContent = "00:00:00"; // resets elements to 0
+    movesElement.innerHTML = 0; // reset element move to 0
+    moves = 0; // resets moves variable to 0
+    shuffleCards(); // invjoke function
+
 }
 
-// Start the timer:
+// function start the timer
 function startTimer() {
-   setInterval(runTimer,10);
+    // assign setInterval method to the global variable to reset clock
+    if (!timerRunning) {
+        timerRunning = true; 
+   interval = setInterval(runTimer,10);
+    }
 }
-// function to display timer running
+
+// function to display on element timer running
 function runTimer() {
 let currentTime = leadingZero(timer[0]) + ":" + leadingZero(timer[1]) + ":" + leadingZero(timer[2]);
 theTimer.innerHTML = currentTime;
@@ -61,7 +79,7 @@ timer[1] = Math.floor((timer[3]/100) - (timer[0] * 60));
 timer[2] = Math.floor(timer[3] - (timer[1] * 100) - (timer[0] * 6000));
 }
 
-// function add leading zero to numbers 9 or below
+// function add leading zero to numbers 9 on or below
 function leadingZero(time) {
     if (time <= 9) {
         time = "0" + time;
@@ -90,7 +108,7 @@ function cardSelection(e) {
 // function to open only 2 cards at the time
 function openOnlyTwoCards() {
     if (openCards.length === 2) {
-        // remove click listener if 2 cards are selected
+        // disable click listener if 2 cards are selected
         deck.removeEventListener("click", cardSelection);
         matchCards();
     }
@@ -100,19 +118,19 @@ function openOnlyTwoCards() {
 function matchCards() {
     //open cards to close in 1 second after they dont match
     setTimeout(function () {
-
        if (openCards[0].innerHTML !== openCards[1].innerHTML) {
          for (let card of openCards) {
-          card.classList.remove("open", "show");
+          card.classList.remove("open", "show"); // if they not equal cards, remove classes
           openCards = []; // empty the array if cards dont match
-          addAgainEventListener(); // function reatach event listener
+          addAgainEventListener(); // invoke function to re-atach event listener
         }
        } else {
+
         for (let card of openCards) {
-            card.classList.add("match");
-            matchCardsArray.push(card);
-            openCards = []; // empty the array if cards dont match
-            addAgainEventListener(); // function reatach event listener
+            card.classList.add("match"); // add class match to identical cards
+            matchCardsArray.push(card); // push the matching cards to the array
+            openCards = []; // empty the array to wait for next cards
+            addAgainEventListener();
        }
     }
     }, 1000);
@@ -122,7 +140,6 @@ function matchCards() {
 function addAgainEventListener() {
     deck.addEventListener("click", cardSelection);
 }
-
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -143,9 +160,11 @@ function shuffle(array) {
 }
 
 
-// event listeners
+/****************   EVENT LISTENERS   ***************/
+
 deck.addEventListener("click", cardSelection);
 deck.addEventListener("click", startTimer);
+deck.addEventListener("click",movesCounter);
 restart.addEventListener("click", RestartAndShuffleCards);
 
 /*
