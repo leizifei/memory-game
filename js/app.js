@@ -26,29 +26,11 @@ var timer = [0, 0, 0, 0]; // array for the timer
 shuffleCards();
 
 // *********** FUNCTIONS ****************** //
-
+// function to keep track of moves
 function movesCounter() {
+    moves++
     movesElement.innerHTML = moves;
-    for (let card of openCards) {
-        if (card.classList.contains("open", "show","match")) {
-            return moves++;
-        } else {
-            reAttachClick();
-            return moves;
-        }
-    }
-
 }
-
-
-function removeClick() {
-    deck.removeEventListener("click", movesCounter);
-}
-
-function reAttachClick() {
-    deck.addEventListener("click", movesCounter);
-}
-
 
 // function to shuffle elements
 function shuffleCards() {
@@ -128,6 +110,7 @@ function openOnlyTwoCards() {
     if (openCards.length === 2) {
         // disable click listener if 2 cards are selected
         deck.removeEventListener("click", cardSelection);
+        movesCounter();
         matchCards();
     }
 }
@@ -182,7 +165,6 @@ function shuffle(array) {
 
 deck.addEventListener("click", cardSelection);
 deck.addEventListener("click", startTimer);
-deck.addEventListener("click", movesCounter);
 restart.addEventListener("click", RestartAndShuffleCards);
 
 

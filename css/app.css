@@ -82,6 +82,11 @@ h1 {
     background: #02ccba;
     font-size: 33px;
 }
+.clickDisable {
+    
+    pointer-events: none; /* disable the click event on the parent element */
+
+}
 .timer {
     margin-left: 5px;
 }
