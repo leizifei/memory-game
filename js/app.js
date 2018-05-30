@@ -31,11 +31,13 @@ function movesCounter() {
     movesElement.innerHTML = moves;
     for (let card of openCards) {
         if (card.classList.contains("open", "show","match")) {
-           return moves++;
+            return moves++;
         } else {
+            reAttachClick();
             return moves;
         }
     }
+
 }
 
 
