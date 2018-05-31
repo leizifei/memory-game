@@ -15,6 +15,7 @@ const restart = document.querySelector(".restart");
 const movesElement = document.querySelector(".moves");
 const theTimer = document.querySelector(".timer");
 const restartBtn = document.querySelector(".fa-repeat");
+const stars = document.querySelector(".stars")
 var moves = 0;
 var interval;
 var timerRunning = false;
@@ -31,6 +32,15 @@ shuffleCards();
 function movesCounter() {
     moves++
     movesElement.innerHTML = moves;
+    removeStar();
+}
+
+function removeStar() {
+    if (moves === 10) {
+        stars.removeChild(stars.firstElementChild);
+    } else if (moves === 20) {
+        stars.removeChild(stars.firstElementChild);
+    }
 }
 
 // function to shuffle elements
@@ -58,11 +68,11 @@ function RestartAndShuffleCards() {
     movesElement.innerHTML = 0; // reset element move to 0
     moves = 0; // resets moves variable to 0
     shuffleCards(); // invjoke function
-    rotateAnimation ();
+    rotateAnimation();
 
 }
 // restart button animation
-function rotateAnimation (){
+function rotateAnimation() {
     // restartBtn.classList.add("restart-animation");
     restartBtn.classList.toggle("restart-animation");
     setTimeout(function () {
@@ -177,7 +187,32 @@ deck.addEventListener("click", cardSelection);
 deck.addEventListener("click", startTimer);
 restart.addEventListener("click", RestartAndShuffleCards);
 
+/**** MODAL POPUP  *****/
+// Get the modal
+var modal = document.getElementById('myModal');
 
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:

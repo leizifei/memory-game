@@ -133,3 +133,81 @@ i {
         transform:rotate(360deg);
     }
 }
+
+/* Style for the modal */
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 150px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.3); /* Black w/ opacity */
+
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #fefefe;
+    width: 70%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.6s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+}
+
+.modal-header {
+    text-align: center;
+    padding: 25px;
+    background-color: #02ccba;
+    color: #fefefe;
+}
+
+.modal-body {
+    padding: 65px ;
+}
+
+.modal-footer {
+    padding: 2px;
+    text-align: center;
+    background-color: #02ccba;
+    color: #fefefe;
+}
+.replay {
+    cursor: pointer;
+}
+/* The Close Button */
+.close {
+    color: #fefefe;
+    /* font-size: 20px; */
+    cursor: pointer;
+}
+.fa-refresh {
+font-size: 20px;
+margin-left: 10px;
+}
+.fa-times {
+font-size: 25px;
+margin-left: 10px;
+}
