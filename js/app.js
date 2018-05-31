@@ -41,12 +41,27 @@ function movesCounter() {
 }
 
 // function remove stars
+
 function removeStar() {
     if (moves === 10) {
         stars.removeChild(stars.firstElementChild);
     } else if (moves === 20) {
         stars.removeChild(stars.firstElementChild);
     }
+}
+
+function resetStars (){
+    let resetStarsCountOne = document.createElement("li");
+    let resetStarsCountTwo = document.createElement("li");
+    resetStarsCountOne.innerHTML = "<i class='fa fa-star'></i>";
+    resetStarsCountTwo.innerHTML = "<i class='fa fa-star'></i>";
+
+      if (stars.childElementCount === 2) {
+        stars.appendChild(resetStarsCountOne);
+      } else if (stars.childElementCount === 1) {
+        stars.appendChild(resetStarsCountOne);
+        stars.appendChild(resetStarsCountTwo);
+      }
 }
 
 // function to shuffle elements
@@ -75,6 +90,8 @@ function RestartAndShuffleCards() {
     moves = 0; // resets moves variable to 0
     shuffleCards(); // invjoke function
     rotateAnimation();
+    addStartTimerAgain();
+    resetStars();
 }
 
 // function restart button animation
@@ -187,6 +204,11 @@ function addAgainEventListener() {
     deck.addEventListener("click", cardSelection);
 }
 
+
+function addStartTimerAgain() {
+    deck.addEventListener("click", startTimer);
+}
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length,
@@ -219,6 +241,7 @@ var spanReplay = document.getElementsByClassName("replay")[0];
 // When the user clicks on <span> (x), close the modal
 span.onclick = function () {
     modal.style.display = "none";
+    deck.removeEventListener("click", startTimer);
 }
 
 spanReplay.onclick = function () {
