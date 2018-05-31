@@ -82,11 +82,7 @@ h1 {
     background: #02ccba;
     font-size: 33px;
 }
-.clickDisable {
-    
-    pointer-events: none; /* disable the click event on the parent element */
 
-}
 .timer {
     margin-left: 5px;
 }
@@ -121,4 +117,19 @@ i {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+.restart-animation{
+  animation-name: spin;
+  animation-duration: 900ms;
+  animation-iteration-count: 1;
+  animation-timing-function: ease; 
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
 }

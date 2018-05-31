@@ -13,7 +13,8 @@ const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
 const movesElement = document.querySelector(".moves");
-const theTimer = document.querySelector(".timer")
+const theTimer = document.querySelector(".timer");
+const restartBtn = document.querySelector(".fa-repeat");
 var moves = 0;
 var interval;
 var timerRunning = false;
@@ -57,7 +58,16 @@ function RestartAndShuffleCards() {
     movesElement.innerHTML = 0; // reset element move to 0
     moves = 0; // resets moves variable to 0
     shuffleCards(); // invjoke function
+    rotateAnimation ();
 
+}
+// restart button animation
+function rotateAnimation (){
+    // restartBtn.classList.add("restart-animation");
+    restartBtn.classList.toggle("restart-animation");
+    setTimeout(function () {
+        restartBtn.classList.toggle("restart-animation");
+    }, 1500);
 }
 
 // function start the timer
@@ -134,7 +144,7 @@ function matchCards() {
                 addAgainEventListener();
             }
         }
-    }, 1000);
+    }, 750);
 }
 
 // function re-attach event listener
