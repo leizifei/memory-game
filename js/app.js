@@ -8,7 +8,7 @@
  *   - add each card's HTML to the page
  */
 
-// elements from the DOM
+// variable with elements from the DOM 
 const allCards = document.querySelectorAll(".card");
 const deck = document.querySelector(".deck");
 const restart = document.querySelector(".restart");
@@ -16,6 +16,10 @@ const movesElement = document.querySelector(".moves");
 const theTimer = document.querySelector(".timer");
 const restartBtn = document.querySelector(".fa-repeat");
 const stars = document.querySelector(".stars")
+const congratsMsg = document.querySelector(".congrats-msg")
+const playAgain = document.querySelector(".replay")
+
+// declared variables
 var moves = 0;
 var interval;
 var timerRunning = false;
@@ -28,6 +32,7 @@ var timer = [0, 0, 0, 0]; // array for the timer
 shuffleCards();
 
 // *********** FUNCTIONS ****************** //
+
 // function to keep track of moves
 function movesCounter() {
     moves++
@@ -35,6 +40,7 @@ function movesCounter() {
     removeStar();
 }
 
+// function remove stars
 function removeStar() {
     if (moves === 10) {
         stars.removeChild(stars.firstElementChild);
@@ -69,15 +75,20 @@ function RestartAndShuffleCards() {
     moves = 0; // resets moves variable to 0
     shuffleCards(); // invjoke function
     rotateAnimation();
-
 }
-// restart button animation
+
+// function restart button animation
 function rotateAnimation() {
     // restartBtn.classList.add("restart-animation");
     restartBtn.classList.toggle("restart-animation");
     setTimeout(function () {
         restartBtn.classList.toggle("restart-animation");
     }, 1500);
+}
+
+// function for the modal play again
+function replay() {
+    RestartAndShuffleCards();
 }
 
 // function start the timer
@@ -151,17 +162,30 @@ function matchCards() {
                 card.classList.add("match"); // add class match to identical cards
                 matchCardsArray.push(card); // push the matching cards to the array
                 openCards = []; // empty the array to wait for next cards
+                if (matchCardsArray.length === 16) {
+                    timerRunning = false; // stops the timer
+                    popUpMessage();
+                }
                 addAgainEventListener();
             }
         }
     }, 750);
 }
 
+// function for the pop up congrats message
+function popUpMessage() {
+    clearInterval(interval);
+    interval = null; // 
+    modal.style.display = "block";
+    congratsMsg.innerHTML = "Total stars : " + stars.childElementCount +
+        " <br/><br/>  Time: " + theTimer.innerHTML;
+}
+
+
 // function re-attach event listener
 function addAgainEventListener() {
     deck.addEventListener("click", cardSelection);
 }
-
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -180,14 +204,8 @@ function shuffle(array) {
     return array;
 }
 
+/**** MODAL POPUP FROM https://www.w3schools.com/howto/howto_css_modals.asp *****/
 
-/****************   EVENT LISTENERS   ***************/
-
-deck.addEventListener("click", cardSelection);
-deck.addEventListener("click", startTimer);
-restart.addEventListener("click", RestartAndShuffleCards);
-
-/**** MODAL POPUP  *****/
 // Get the modal
 var modal = document.getElementById('myModal');
 
@@ -196,23 +214,33 @@ var btn = document.getElementById("myBtn");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-    modal.style.display = "block";
-}
+var spanReplay = document.getElementsByClassName("replay")[0];
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() {
+span.onclick = function () {
+    modal.style.display = "none";
+}
+
+spanReplay.onclick = function () {
     modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == modal) {
         modal.style.display = "none";
     }
 }
+
+/****************   EVENT LISTENERS   ***************/
+
+deck.addEventListener("click", cardSelection);
+deck.addEventListener("click", startTimer);
+restart.addEventListener("click", RestartAndShuffleCards);
+playAgain.addEventListener("click", replay);
+
+
+
 
 /*
  * set up the event listener for a card. If a card is clicked:
