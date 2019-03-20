@@ -8,16 +8,26 @@
  *   - add each card's HTML to the page
  */
 
-// variable with elements from the DOM 
+// variable with elements from the
+
+// stores the list of all cards in the variable
 const allCards = document.querySelectorAll(".card");
+// selects the container of the list of cards
 const deck = document.querySelector(".deck");
+// store the restart icon to a variable
 const restart = document.querySelector(".restart");
+// store the number of moves to a variable to count the amount of plays
 const movesElement = document.querySelector(".moves");
+// stores the timer for initiazligin when user starts the game
 const theTimer = document.querySelector(".timer");
+// reset button from an icon store in a variable
 const restartBtn = document.querySelector(".fa-repeat");
-const stars = document.querySelector(".stars")
-const congratsMsg = document.querySelector(".congrats-msg")
-const playAgain = document.querySelector(".replay")
+// keeps the count of how many stars user have
+const stars = document.querySelector(".stars");
+// for displaying a congratulation message when user wins the game
+const congratsMsg = document.querySelector(".congrats-msg");
+// variable to play the game again
+const playAgain = document.querySelector(".replay");
 
 // declared variables
 var moves = 0;
@@ -35,14 +45,16 @@ shuffleCards();
 
 // function to keep track of moves
 function movesCounter() {
-    moves++
+    moves++;
     movesElement.innerHTML = moves;
+    // depending the amount of moves player has had, the start will be decreased
+    // by calling back the function
     removeStar();
 }
 
 // function remove stars
-
 function removeStar() {
+    // if user has more than 10 moves, it will remove a star and so on
     if (moves === 10) {
         stars.removeChild(stars.firstElementChild);
     } else if (moves === 20) {
@@ -50,6 +62,7 @@ function removeStar() {
     }
 }
 
+// function to reset the starts when 
 function resetStars (){
     let resetStarsCountOne = document.createElement("li");
     let resetStarsCountTwo = document.createElement("li");
@@ -64,7 +77,7 @@ function resetStars (){
       }
 }
 
-// function to shuffle elements
+// function to shuffle the cards, it loops through the list of cards and create them randomly
 function shuffleCards() {
     for (var i = deck.children.length; i >= 0; i--) {
         deck.appendChild(deck.children[(Math.random() * i) | 0]);
@@ -73,6 +86,7 @@ function shuffleCards() {
 
 // function to reset the game
 function RestartAndShuffleCards() {
+    // loops through the list and remove the classes to reset to their original state
     for (let card of openCards) {
         card.classList.remove("open", "show", "match");
         openCards = [];
@@ -88,15 +102,14 @@ function RestartAndShuffleCards() {
     theTimer.textContent = "00:00:00"; // resets elements to 0
     movesElement.innerHTML = 0; // reset element move to 0
     moves = 0; // resets moves variable to 0
-    shuffleCards(); // invjoke function
-    rotateAnimation();
-    addStartTimerAgain();
-    resetStars();
+    shuffleCards(); // invokes the function and shuffle cards for a new game
+    rotateAnimation(); // it rotates the restart icon animation
+    addStartTimerAgain(); // reset the timer to begin again
+    resetStars(); // resets stars back to 3
 }
 
 // function restart button animation
 function rotateAnimation() {
-    // restartBtn.classList.add("restart-animation");
     restartBtn.classList.toggle("restart-animation");
     setTimeout(function () {
         restartBtn.classList.toggle("restart-animation");
@@ -117,7 +130,7 @@ function startTimer() {
     }
 }
 
-// function to display on element timer running
+// function to display the timer running when user starts the game
 function runTimer() {
     let currentTime = leadingZero(timer[0]) + ":" + leadingZero(timer[1]) + ":" + leadingZero(timer[2]);
     theTimer.innerHTML = currentTime;
@@ -140,7 +153,7 @@ function cardSelection(e) {
     // selects the current clicked card and stores in a variable
     let card = e.target;
 
-    if (
+    if ( // card does not contain any of the classes 
         !card.classList.contains("open") &&
         !card.classList.contains("show") &&
         !card.classList.contains("match")
@@ -153,13 +166,13 @@ function cardSelection(e) {
     }
 }
 
-// function to open only 2 cards at the time
+// function to allow user to open 2 card at the time
 function openOnlyTwoCards() {
     if (openCards.length === 2) {
-        // disable click listener if 2 cards are selected
+        // disable click listener if 2 cards are selected, preventing user to open a third card
         deck.removeEventListener("click", cardSelection);
-        movesCounter();
-        matchCards();
+        movesCounter(); // calls the movesCounter to add a move
+        matchCards(); // calls function to check if cards match
     }
 }
 
@@ -167,6 +180,7 @@ function openOnlyTwoCards() {
 function matchCards() {
     //open cards to close in 1 second after they dont match
     setTimeout(function () {
+        // if cards are not equal
         if (openCards[0].innerHTML !== openCards[1].innerHTML) {
             for (let card of openCards) {
                 card.classList.remove("open", "show"); // if they not equal cards, remove classes
@@ -174,12 +188,12 @@ function matchCards() {
                 addAgainEventListener(); // invoke function to re-atach event listener
             }
         } else {
-
+            // if cards match
             for (let card of openCards) {
                 card.classList.add("match"); // add class match to identical cards
                 matchCardsArray.push(card); // push the matching cards to the array
                 openCards = []; // empty the array to wait for next cards
-                if (matchCardsArray.length === 16) {
+                if (matchCardsArray.length === 16) { // if user matches all card
                     timerRunning = false; // stops the timer
                     popUpMessage();
                 }
@@ -199,12 +213,12 @@ function popUpMessage() {
 }
 
 
-// function re-attach event listener
+// function re-attach event listener for the next play
 function addAgainEventListener() {
     deck.addEventListener("click", cardSelection);
 }
 
-
+// restart the timer
 function addStartTimerAgain() {
     deck.addEventListener("click", startTimer);
 }
